@@ -55,13 +55,15 @@ io.on("connection", async (socket) => {
 
     //el servidor escucha cuando el cliente elimina un producto
     socket.on("deleteProduct", async (id) => {
-
         //console.log("Product deleted with ID:", id);
         await productManager.deleteProduct(id);
+        console.log("Deleting product with ID:", id);
     });
+    // el servidor emite los productos actualizados a todos los clientes
+    io.emit("products", await productManager.getProducts());
     // el servidor envía los productos actualizados al cliente
-    socket.emit("products", await productManager.getProducts());
-
+    //socket.emit("products", await productManager.getProducts());
+    
     //el servidor escucha cuando el cliente agrega un producto
     socket.on("addProduct", async (product) => {
         await productManager.addProduct(product);

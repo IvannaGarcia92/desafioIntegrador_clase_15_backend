@@ -21,7 +21,7 @@ router.get("/realTimeProducts", async (req, res) => {
 })
 
 //ver el chat en el home
-router.get("/", async (req, res) => { 
+router.get("/chat", async (req, res) => { 
     res.render("chat");
 })
 

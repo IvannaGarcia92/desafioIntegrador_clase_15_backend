@@ -16,15 +16,17 @@ const renderProducts = (products) => {
                                 <p> ID: ${item.id} </p>
                                 <p> Title: ${item.title} </p>
                                 <p> Price: ${item.price} </p>
-                                <button> Delete Product </button>
+                                <button class="delete-product-btn" data-product-id="${item.id}"> Delete Product </button>
         `;
 
         productsContainer.appendChild(productCard);
         //evento del boton para eliminar producto
-        productCard.querySelector("button").addEventListener("click", () => {
-            //console.log({id:item.id})
-            //console.log(item)
-            deleteProduct(item.id)
+        productCard.querySelector(".delete-product-btn").addEventListener("click", () => {
+            //const productId = item.id;
+            //const productId = event.target.dataset.productId;
+            const productId = item._id.toString();
+            deleteProduct(productId);
+            //deleteProduct(item.id)
         })
     })
 }

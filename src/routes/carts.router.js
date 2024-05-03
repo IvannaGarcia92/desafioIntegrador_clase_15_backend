@@ -45,7 +45,7 @@ router.get("/:cid", async (req, res) => {
 
 // Agregamos productos a distintos carritos
 
-router.post("/:cid/product/:pid", async (req, res) => {
+router.post("/:cid/products/:pid", async (req, res) => {
     const cartId = req.params.cid.toString();
     const productId = req.params.pid.toString();
     const quantity = req.body.quantity || 1;

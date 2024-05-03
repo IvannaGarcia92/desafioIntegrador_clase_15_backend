@@ -4,7 +4,7 @@ const CartManager = require("../controllers/cart.manager.js");
 const cartManager = new CartManager();
 
 
-//1) Creamos un nuevo carrito: 
+// Creamos un nuevo carrito
 
 router.post("/", async (req, res) => {
     try {
@@ -16,10 +16,22 @@ router.post("/", async (req, res) => {
     }
 });
 
-//2) Listamos los productos que pertenecen a determinado carrito. 
+// ruta donde listamos todos los carritos
+router.get("/", async (req, res) => {
+    try {
+        const allCarts = await cartManager.getAllCarts();
+        res.json(allCarts);
+    } catch (error) {
+        console.error("No es posible obtener los carritos.", error);
+        res.status(500).json({ error: "Error interno del servidor." });
+    }
+});
+
+
+// Listamos los productos que pertenecen a determinado carrito
 
 router.get("/:cid", async (req, res) => {
-    const cartId = req.params.cid;
+    const cartId = req.params.cid.toString();
 
     try {
         const cart = await cartManager.getCartById(cartId);
@@ -31,11 +43,11 @@ router.get("/:cid", async (req, res) => {
 });
 
 
-//3) Agregar productos a distintos carritos.
+// Agregamos productos a distintos carritos
 
 router.post("/:cid/product/:pid", async (req, res) => {
-    const cartId = req.params.cid;
-    const productId = req.params.pid;
+    const cartId = req.params.cid.toString();
+    const productId = req.params.pid.toString();
     const quantity = req.body.quantity || 1;
 
     try {
@@ -43,6 +55,19 @@ router.post("/:cid/product/:pid", async (req, res) => {
         res.json(updateCart.products);
     } catch (error) {
         console.error("No es posible agregar productos al carrito.", error);
+        res.status(500).json({ error: "Error interno del servidor." });
+    }
+});
+
+// Eliminar un carrito por su ID
+router.delete("/:cid", async (req, res) => {
+    const cartId = req.params.cid.toString();
+
+    try {
+        await cartManager.deleteCartById(cartId);
+        res.json({ message: "Carrito eliminado correctamente." });
+    } catch (error) {
+        console.error("No es posible eliminar el carrito.", error);
         res.status(500).json({ error: "Error interno del servidor." });
     }
 });

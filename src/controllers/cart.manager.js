@@ -52,6 +52,25 @@ class CartManager {
             throw error; 
         }
     }
+
+    async getAllCarts() {
+        try {
+            const carts = await CartModel.find();
+            return carts;
+        } catch (error) {
+            console.log("No es posible obtener todos los carritos.", error);
+            throw error;
+        }
+    }
+
+    async deleteCartById(cartId) {
+        try {
+            await CartModel.findByIdAndDelete(cartId);
+        } catch (error) {
+            console.log("No es posible eliminar el carrito con ese ID.", error);
+            throw error;
+        }
+    }
 }
 
 module.exports = CartManager;

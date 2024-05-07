@@ -4,6 +4,7 @@ const exphbs = require("express-handlebars");
 const socket = require("socket.io");
 const PUERTO = 8080;
 require("./database.js");
+//const path = require('path');
 
 
 const productsRouter = require("./routes/products.router.js");
@@ -14,6 +15,7 @@ const viewsRouter = require("./routes/views.router.js");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("./src/public"));
+//app.use(express.static(path.join(__dirname, 'public')));
 
 //Handlebars
 app.engine("handlebars", exphbs.engine());
@@ -38,7 +40,7 @@ const httpServer = app.listen(PUERTO, () => {
 
 // importamos el modelo del chat
 const MessageModel = require("./models/message.model.js");
-//instancia socket.io (server)
+// instancia socket.io (server)
 const io = socket(httpServer);
 
 const ProductManager = require("./controllers/product.manager.js");
@@ -84,7 +86,7 @@ io.on("connection", (socket) => {
         await MessageModel.create(data);
 
         //Obtengo los mensajes de MongoDB y se los paso al cliente: 
-        const messages = await MessageModel.find().lean();
+        let messages = await MessageModel.find().lean();
         console.log(messages);
         io.emit("messagesLogs", messages);
     })
